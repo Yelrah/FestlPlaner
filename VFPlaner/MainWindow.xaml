@@ -39,7 +39,7 @@
 
             <TabControl Grid.Column="0" Grid.ColumnSpan="7" Grid.RowSpan="3" Grid.Row="0" x:Name="Fest" Margin="10">
 
-                <TabItem Header="Datagrid">
+                <TabItem Header="Mitarbeiter">
 
                     <dxg:GridControl x:Name="grid" VerticalAlignment="Top" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True">
 
@@ -62,7 +62,7 @@
                         <dxg:GridColumn FieldName="ErstesJahr" />
                         <dxg:GridColumn FieldName="AnzahlJahre"/>
                         <dxg:GridColumn FieldName="Team"/>
-                        <dxg:GridColumn FieldName="DiesesJahr" x:Name="Heuer">
+                        <dxg:GridColumn FieldName="DiesesJahr">
                             <dxg:GridColumn.DisplayTemplate>
                                 <ControlTemplate>
                                     <dxe:CheckEdit EditMode="InplaceInactive" IsChecked="{Binding EditValue, RelativeSource={RelativeSource Mode=TemplatedParent}}"
@@ -96,7 +96,7 @@
                         </Grid.ColumnDefinitions>
                         <Button Content="Mitarbeiter übernehmen" Grid.Column="5" Grid.Row="0" Margin="2" Click="Button_Click" IsEnabled="{Binding Loaded}"/>
                         <TextBlock Text="Anzahl der Arbeiter" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1" Grid.Row="0" Margin="1" Name="Anzahl"/>
+                        <TextBox Grid.Column="1" Grid.Row="0" Margin="1" Name="Anzahl" VerticalAlignment="Center"/>
                     </Grid>
                 </TabItem>
             </TabControl>

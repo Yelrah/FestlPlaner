@@ -4,12 +4,6 @@ using VFPlaner.Klassen;
 using Microsoft.Win32;
 using System.Data;
 using System;
-using DevExpress.XtraGrid.Views.Grid;
-using System.ComponentModel;
-using DevExpress.Xpf.Bars;
-using DevExpress.Xpf.Grid;
-using System.Diagnostics;
-using VFPlaner.Gui;
 using Controller.Grid;
 using DevExpress.XtraGrid.Localization;
 
@@ -55,7 +49,7 @@ namespace VFPlaner
                         Tage = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Tage")?.InnerText,
                         ErstesJahr = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/ErstesJahr")?.InnerText,
                         AnzahlJahre = Int32.Parse(root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/AnzahlJahre")?.InnerText),
-           
+
                     };
                 }
                 _path = of.FileName;
@@ -89,10 +83,31 @@ namespace VFPlaner
 
         private void MAUbernahme()
         {
-            _arbeiterzahl = Int32.Parse(Anzahl.Text);
-
-           
-
+            if (Anzahl.Text.Equals(""))
+            {
+                MessageBox.Show("Tragen sie eine gültige Anzahl ein!", "Warnung", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                _arbeiterzahl = Int32.Parse(Anzahl.Text);
+                int counter = 0;
+                for (int i = 0; i < (grid.VisibleRowCount - 1); i++)
+                {
+                    string test = (string)grid.GetCellValue(i, "DiesesJahr");
+                    if (  test.Equals("true") || test.Equals("True"))
+                    {
+                        counter++;
+                    }
+                }
+                if (counter == _arbeiterzahl)
+                {
+                    //ToDo Something
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("Sie haben {0} benötigen aber {1} Servicekräfte", counter, _arbeiterzahl), "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
     }
 }
