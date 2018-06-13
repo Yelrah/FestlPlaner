@@ -6,15 +6,18 @@
         xmlns:local="clr-namespace:VFPlaner" 
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="VFPlaner.MainWindow"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Name="Fest1" x:Class="VFPlaner.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
     <DockPanel Margin="10">
         <Ribbon HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" DockPanel.Dock="Top" Margin="-11,-34,-11,-5">
             <RibbonTab Header="Volksfest">
                 <RibbonGroup Header="File System">
                     <RibbonButton x:Name="Laden" Label="Laden" Click="Load" />
                     <RibbonButton x:Name="Speichern" Label="Speichern" Click="Save" />
+                </RibbonGroup>
+                <RibbonGroup Header="Mitarbeiter - System">
+                    <RibbonButton Label="Übernehmen" Click="Button_Click" IsEnabled="{Binding Loaded}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
@@ -37,14 +40,14 @@
             </Grid.ColumnDefinitions>
 
 
-            <TabControl Grid.Column="0" Grid.ColumnSpan="7" Grid.RowSpan="3" Grid.Row="0" x:Name="Fest" Margin="10">
+            <TabControl Grid.Column="0" Grid.ColumnSpan="7" Grid.RowSpan="4" Grid.Row="0" x:Name="Fest" Margin="10">
 
                 <TabItem Header="Mitarbeiter">
 
-                    <dxg:GridControl x:Name="grid" VerticalAlignment="Top" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True">
+                    <dxg:GridControl x:Name="grid" VerticalAlignment="Top" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Height="280" Margin="0" >
 
                         <dxg:GridControl.View >
-                            <dxg:TableView AutoWidth="True" NewItemRowPosition="Bottom" ShowGroupFooters="true">
+                            <dxg:TableView AutoWidth="True" NewItemRowPosition="Bottom" ShowGroupFooters="true" AllowPerPixelScrolling="True" ShowTotalSummary="True">
                                 <dxg:TableView.FormatConditions>
                                     <dxg:ColorScaleFormatCondition ApplyToRow="True" FieldName="Team" MaxValue="10" MinValue="0">
                                         <dx:ColorScaleFormat ColorMin="#FFF8696B" ColorMax="#FF63BE7B" ColorMiddle="#FFFFEB84"/>
@@ -83,22 +86,29 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Height="10*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="0.5*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="Mitarbeiter übernehmen" Grid.Column="5" Grid.Row="0" Margin="2" Click="Button_Click" IsEnabled="{Binding Loaded}"/>
                         <TextBlock Text="Anzahl der Arbeiter" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1" Grid.Row="0" Margin="1" Name="Anzahl" VerticalAlignment="Center"/>
+                        <TextBox Margin="1" Name="Anzahl" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.ColumnSpan="1" MinWidth="50" MaxWidth="50" />
+                        <Button Content="Mitarbeiter übernehmen" Grid.Column="1" Click="Button_Click" IsEnabled="{Binding Loaded}" HorizontalAlignment="Right" MaxHeight="25" MaxWidth="170" Grid.ColumnSpan="2"/>
+                        <!-- Grid Planung -->
+                        <dxg:GridControl Grid.ColumnSpan="3" Grid.Row="1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True">
+                            <dxg:GridControl.View>
+                                <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True"/>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
                     </Grid>
                 </TabItem>
+
+                <!-- __________________________________________________Anzahl Arbeiter__________________________________________________ -->
+
+
+
             </TabControl>
         </Grid>
         <!--<dxg:GridControl AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True">
@@ -108,3 +118,26 @@
         </dxg:GridControl>-->
     </DockPanel>
 </Window>
+<!-- ______________________________________Team Management______________________________________________________________ -->
+<!--
+                        <TextBlock Text="Team Management" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+                        -->
+<!-- ______________________________________Anzahl Teams______________________________________________________________ -->
+<!--
+                        <TextBlock Text="Anzahl der Teams" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBox Grid.Column="1" Grid.Row="2" IsReadOnly="True" Margin="1" Name="AnzahlTeams" VerticalAlignment="Center"/>
+
+
+                        -->
+<!-- ______________________________________Art_____________________________________________________________ -->
+<!--
+                        <TextBlock Text="Art" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+
+                        -->
+<!-- _____________________________________Service__________________________________________________________________ -->
+<!--
+                        <TextBlock Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Left" Text=" Anzahl der Services"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" IsReadOnly="True" />-->

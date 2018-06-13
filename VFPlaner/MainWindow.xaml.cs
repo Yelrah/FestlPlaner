@@ -69,7 +69,11 @@ namespace VFPlaner
 
         public void PostDataToXML()
         {
-            ((DataTable)grid.ItemsSource).DataSet.WriteXml(_path);
+            if (_loaded)
+            {
+                ((DataTable)grid.ItemsSource).DataSet.WriteXml(_path);
+            }
+            else { SchmeißLadeFehler(); }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -78,7 +82,10 @@ namespace VFPlaner
             {
                 MAUbernahme();
             }
-            else { MessageBox.Show("Laden Sie zuerst eine Datei", "Fehler", MessageBoxButton.OK); }
+            else
+            {
+                SchmeißLadeFehler();
+            }
         }
 
         private void MAUbernahme()
@@ -94,20 +101,26 @@ namespace VFPlaner
                 for (int i = 0; i < (grid.VisibleRowCount - 1); i++)
                 {
                     string test = (string)grid.GetCellValue(i, "DiesesJahr");
-                    if (  test.Equals("true") || test.Equals("True"))
+                    if (test.Equals("true") || test.Equals("True"))
                     {
                         counter++;
                     }
                 }
-                if (counter == _arbeiterzahl)
+                if (counter != _arbeiterzahl)
                 {
-                    //ToDo Something
+                    MessageBox.Show(string.Format("Sie haben {0} eingetragen, benötigen aber {1} Servicekräfte", counter, _arbeiterzahl), "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
-                    MessageBox.Show(string.Format("Sie haben {0} benötigen aber {1} Servicekräfte", counter, _arbeiterzahl), "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //TO DO Something
+
                 }
             }
+        }
+
+        private void SchmeißLadeFehler()
+        {
+            MessageBox.Show("Laden Sie zuerst eine Datei", "Fehler", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
     }
 }
