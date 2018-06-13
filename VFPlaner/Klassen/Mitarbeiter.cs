@@ -5,7 +5,7 @@ namespace VFPlaner.Klassen
     public class Mitarbeiter
     {
         [Category("Mitarbeiter")]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [Category("Mitarbeiter")]
         public string Vorname { get; set; }
         [Category("Mitarbeiter")]

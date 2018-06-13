@@ -44,7 +44,7 @@
 
                 <TabItem Header="Mitarbeiter">
 
-                    <dxg:GridControl x:Name="grid" VerticalAlignment="Top" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Height="280" Margin="0" >
+                    <dxg:GridControl x:Name="Grid" VerticalAlignment="Top" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Height="280" Margin="0" >
 
                         <dxg:GridControl.View >
                             <dxg:TableView AutoWidth="True" NewItemRowPosition="Bottom" ShowGroupFooters="true" AllowPerPixelScrolling="True" ShowTotalSummary="True">
@@ -94,7 +94,8 @@
                             <ColumnDefinition Width="0.5*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Anzahl der Arbeiter" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Margin="1" Name="Anzahl" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.ColumnSpan="1" MinWidth="50" MaxWidth="50" />
+                        <TextBox Margin="1" Name="Anzahl" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                 Grid.Row="0" Grid.ColumnSpan="1" Grid.Column="0" MinWidth="50" MaxWidth="50" />
                         <Button Content="Mitarbeiter übernehmen" Grid.Column="1" Click="Button_Click" IsEnabled="{Binding Loaded}" HorizontalAlignment="Right" MaxHeight="25" MaxWidth="170" Grid.ColumnSpan="2"/>
                         <!-- Grid Planung -->
                         <dxg:GridControl Grid.ColumnSpan="3" Grid.Row="1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True">

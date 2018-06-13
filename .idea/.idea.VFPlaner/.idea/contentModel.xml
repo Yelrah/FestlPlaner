@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\vogla\.Rider2018.1\system\resharper-host\local\Transient\ReSharperHost\v12\SolutionCaches\_VFPlaner.-1639011508.00" t="ExcludeRecursive" />
+    <e p="C:\Users\vogla\Documents\Projects\VFPlaner\VFPlaner" t="IncludeFlat">
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="VFPlaner" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="App.xaml" t="Include" />
+        <e p="App.xaml.cs" t="Include" />
+        <e p="Bin" t="ExcludeRecursive" />
+        <e p="Commons" t="Include">
+          <e p="CheckboxController.cs" t="Include" />
+          <e p="ObservableObjects.cs" t="Include" />
+        </e>
+        <e p="Core.cs" t="Include" />
+        <e p="Klassen" t="Include">
+          <e p="Mitarbeiter.cs" t="Include" />
+        </e>
+        <e p="MainWindow.xaml" t="Include" />
+        <e p="MainWindow.xaml.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Licenses.licx" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+          <e p="Settings.Designer.cs" t="Include" />
+          <e p="Settings.settings" t="Include" />
+        </e>
+        <e p="VFPlaner.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="VFPlaner.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>

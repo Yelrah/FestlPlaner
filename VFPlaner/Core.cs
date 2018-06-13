@@ -1,9 +1,5 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
-using System.Windows;
 using System.Xml;
 
 namespace VFPlaner
@@ -13,13 +9,13 @@ namespace VFPlaner
         public static XmlDocument SelectNodeMitarbeiter(string pathToDoc)
 
         {
-            XmlDocument doc = new XmlDocument();
-            XmlDocument output = new XmlDocument();
+            var doc = new XmlDocument();
+            var output = new XmlDocument();
             doc.Load(pathToDoc);
             XmlNode root = doc.DocumentElement;
-            XmlNodeList Nlist;
-            string test = "<Output>";
-            foreach (XmlNode mitarbeiter in Nlist = root.SelectNodes("//Saison2018/Volksfest"))// /ServiceTeam
+            XmlNodeList nlist;
+            var test = "<Output>";
+            foreach (XmlNode mitarbeiter in nlist = root.SelectNodes("//Saison2018/Volksfest"))// /ServiceTeam
             {
 
                 test += mitarbeiter.InnerXml;

@@ -12,14 +12,14 @@ namespace VFPlaner
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
 
-        private bool _loaded = false;
-        int _arbeiterzahl;
+        private bool _loaded;
+        private int _arbeiterzahl;
 
 
-        static string _path;
+        private static string _path;
         public MainWindow()
         {
             InitializeComponent();
@@ -28,50 +28,52 @@ namespace VFPlaner
 
         private void Load(object sender, RoutedEventArgs e)
         {
-            XmlDocument doc = new XmlDocument();
-            OpenFileDialog of = new OpenFileDialog();
-            if (of.ShowDialog() == true)
-            {
-                _loaded = true;
-                doc = Core.SelectNodeMitarbeiter(of.FileName);
+            var of = new OpenFileDialog();
+            if (of.ShowDialog() != true) return;
+            _loaded = true;
+            var doc = Core.SelectNodeMitarbeiter(of.FileName);
 
-                XmlNode root = doc.DocumentElement;
-                XmlNodeList list = root.SelectNodes("//Output/ServiceTeam/Mitarbeiter");
+            XmlNode root = doc.DocumentElement;
+            var list = root?.SelectNodes("//Output/ServiceTeam/Mitarbeiter");
 
 
+            if (list != null)
                 foreach (XmlNode mitarbeiter in list)
                 {
                     DataContext = new Mitarbeiter()
                     {
                         Vorname = (root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Vorname"))?.InnerText,
                         Name = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Nachname")?.InnerText,
-                        Telefonnumer = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Telefonnumer")?.InnerText,
+                        Telefonnumer =
+                            root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Telefonnumer")?.InnerText,
                         Tage = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Tage")?.InnerText,
                         ErstesJahr = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/ErstesJahr")?.InnerText,
-                        AnzahlJahre = Int32.Parse(root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/AnzahlJahre")?.InnerText),
-
+                        AnzahlJahre =
+                            Int32.Parse(
+                                root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/AnzahlJahre")?.InnerText ?? throw new Exception("Jahreszahl ist keine Zahl!")),
                     };
                 }
-                _path = of.FileName;
-                grid.ItemsSource = GetDataFromXML(of.FileName);
-            }
+
+            _path = of.FileName;
+            Grid.ItemsSource = GetDataFromXml(of.FileName);
         }
-        public static DataTable GetDataFromXML(string path)
+
+        private static DataTable GetDataFromXml(string path)
         {
-            DataSet ds = new DataSet();
+            var ds = new DataSet();
             ds.ReadXml(path);
             return ds.Tables[0];
         }
         private void Save(object sender, RoutedEventArgs e)
         {
-            PostDataToXML();
+            PostDataToXml();
         }
 
-        public void PostDataToXML()
+        public void PostDataToXml()
         {
             if (_loaded)
             {
-                ((DataTable)grid.ItemsSource).DataSet.WriteXml(_path);
+                ((DataTable)Grid.ItemsSource).DataSet.WriteXml(_path);
             }
             else { SchmeißLadeFehler(); }
         }
@@ -80,7 +82,7 @@ namespace VFPlaner
         {
             if (_loaded)
             {
-                MAUbernahme();
+                MaUbernahme();
             }
             else
             {
@@ -88,7 +90,7 @@ namespace VFPlaner
             }
         }
 
-        private void MAUbernahme()
+        private void MaUbernahme()
         {
             if (Anzahl.Text.Equals(""))
             {
@@ -97,10 +99,10 @@ namespace VFPlaner
             else
             {
                 _arbeiterzahl = Int32.Parse(Anzahl.Text);
-                int counter = 0;
-                for (int i = 0; i < (grid.VisibleRowCount - 1); i++)
+                var counter = 0;
+                for (var i = 0; i < (Grid.VisibleRowCount - 1); i++)
                 {
-                    string test = (string)grid.GetCellValue(i, "DiesesJahr");
+                    var test = (string)Grid.GetCellValue(i, "DiesesJahr");
                     if (test.Equals("true") || test.Equals("True"))
                     {
                         counter++;
@@ -108,7 +110,7 @@ namespace VFPlaner
                 }
                 if (counter != _arbeiterzahl)
                 {
-                    MessageBox.Show(string.Format("Sie haben {0} eingetragen, benötigen aber {1} Servicekräfte", counter, _arbeiterzahl), "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show($"Sie haben {counter} eingetragen, benötigen aber {_arbeiterzahl} Servicekräfte", "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
