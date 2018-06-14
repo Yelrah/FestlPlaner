@@ -17,13 +17,14 @@ namespace VFPlaner
 
         private bool _loaded;
         private int _arbeiterzahl;
-
+        DataSet Festschema;
 
         private static string _path;
         public MainWindow()
         {
             InitializeComponent();
             GridLocalizer.Active = new CustomGridLocalizer();
+            //Festschema = 
         }
 
         private void Load(object sender, RoutedEventArgs e)
@@ -36,26 +37,10 @@ namespace VFPlaner
             XmlNode root = doc.DocumentElement;
             var list = root?.SelectNodes("//Output/ServiceTeam/Mitarbeiter");
 
-
-            if (list != null)
-                foreach (XmlNode mitarbeiter in list)
-                {
-                    DataContext = new Mitarbeiter()
-                    {
-                        Vorname = (root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Vorname"))?.InnerText,
-                        Name = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Nachname")?.InnerText,
-                        Telefonnumer =
-                            root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Telefonnumer")?.InnerText,
-                        Tage = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/Tage")?.InnerText,
-                        ErstesJahr = root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/ErstesJahr")?.InnerText,
-                        AnzahlJahre =
-                            Int32.Parse(
-                                root.SelectSingleNode("//Output/ServiceTeam/Mitarbeiter/AnzahlJahre")?.InnerText ?? throw new Exception("Jahreszahl ist keine Zahl!")),
-                    };
-                }
-
             _path = of.FileName;
-            Grid.ItemsSource = GetDataFromXml(of.FileName);
+            //Grid.ItemsSource = GetDataFromXml(of.FileName);
+            Grid.ItemsSource = GetDataFromXml(@"C:\Users\vogla\Documents\Projects\VFPlaner\VFPlaner\VFPlaner\config\fest.xsd");
+            
         }
 
         private static DataTable GetDataFromXml(string path)
@@ -116,6 +101,7 @@ namespace VFPlaner
                 {
                     //TO DO Something
 
+
                 }
             }
         }
@@ -124,5 +110,13 @@ namespace VFPlaner
         {
             MessageBox.Show("Laden Sie zuerst eine Datei", "Fehler", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
+
+
+
+
+        //private int FindMax (int i)
+        //{
+
+        //}
     }
 }

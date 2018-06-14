@@ -21,6 +21,6 @@ namespace VFPlaner.Klassen
         [Category("Mitarbeiter")]
         public bool DiesesJahr { get; set; }
         [Category("Mitarbeiter")]
-        public string Team { get; set; }
+        public int Team { get; set; }
     }
 }
