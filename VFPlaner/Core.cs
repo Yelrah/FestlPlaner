@@ -6,7 +6,7 @@ namespace VFPlaner
 {
     public class Core
     {      
-        public static XmlDocument SelectNodeMitarbeiter(string pathToDoc)
+        public static XmlDocument SelectNodes(string pathToDoc, string NodeAsXpath)
 
         {
             var doc = new XmlDocument();
@@ -15,7 +15,7 @@ namespace VFPlaner
             XmlNode root = doc.DocumentElement;
             XmlNodeList nlist;
             var test = "<Output>";
-            foreach (XmlNode mitarbeiter in nlist = root.SelectNodes("//Saison2018/Volksfest"))// /ServiceTeam
+            foreach (XmlNode mitarbeiter in nlist = root.SelectNodes(NodeAsXpath))// /ServiceTeam
             {
 
                 test += mitarbeiter.InnerXml;
@@ -26,6 +26,8 @@ namespace VFPlaner
             return output;
 
         }
+
+        
 
         public static string ToIndentedString(XmlDocument doc)
         {

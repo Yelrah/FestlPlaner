@@ -1,11 +1,10 @@
-﻿using System.Windows;
-using System.Xml;
-using VFPlaner.Klassen;
-using Microsoft.Win32;
-using System.Data;
-using System;
-using Controller.Grid;
+﻿using Controller.Grid;
 using DevExpress.XtraGrid.Localization;
+using Microsoft.Win32;
+using System;
+using System.Data;
+using System.Windows;
+using System.Xml;
 
 namespace VFPlaner
 {
@@ -16,7 +15,9 @@ namespace VFPlaner
     {
 
         private bool _loaded;
+        private bool _created;
         private int _arbeiterzahl;
+        string VFName;
         DataSet Festschema;
 
         private static string _path;
@@ -27,20 +28,27 @@ namespace VFPlaner
             //Festschema = 
         }
 
+        private void CreateNewVF(object sender, RoutedEventArgs e)
+        {
+            Grid.ItemsSource = GetDataFromXml(@"C:\Users\vogla\Documents\Projects\VFPlaner\VFPlaner\VFPlaner\config\fest.xsd");
+
+        }
+
         private void Load(object sender, RoutedEventArgs e)
         {
+
             var of = new OpenFileDialog();
             if (of.ShowDialog() != true) return;
             _loaded = true;
-            var doc = Core.SelectNodeMitarbeiter(of.FileName);
+
+            var doc = Core.SelectNodes(of.FileName, "//Saison2018/Volksfest");
 
             XmlNode root = doc.DocumentElement;
             var list = root?.SelectNodes("//Output/ServiceTeam/Mitarbeiter");
 
             _path = of.FileName;
             //Grid.ItemsSource = GetDataFromXml(of.FileName);
-            Grid.ItemsSource = GetDataFromXml(@"C:\Users\vogla\Documents\Projects\VFPlaner\VFPlaner\VFPlaner\config\fest.xsd");
-            
+            Grid.ItemsSource = GetDataFromXml(_path);
         }
 
         private static DataTable GetDataFromXml(string path)
@@ -51,16 +59,26 @@ namespace VFPlaner
         }
         private void Save(object sender, RoutedEventArgs e)
         {
-            PostDataToXml();
+
+            if (_loaded)
+            {
+                SaveFileDialog sf = new SaveFileDialog
+                {
+                    FileName = VFName + "_" + DateTime.Now.Year + ".xml"
+                };
+                sf.ShowDialog();
+                if (sf.ShowDialog() == true)
+                {
+
+                    ((DataTable)Grid.ItemsSource).DataSet.WriteXml(_path);
+                }
+            }
+            else { SchmeißLadeFehler(); }
         }
 
         public void PostDataToXml()
         {
-            if (_loaded)
-            {
-                ((DataTable)Grid.ItemsSource).DataSet.WriteXml(_path);
-            }
-            else { SchmeißLadeFehler(); }
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -77,7 +95,7 @@ namespace VFPlaner
 
         private void MaUbernahme()
         {
-            if (Anzahl.Text.Equals(""))
+            if (Anzahl.Text.Equals(string.Empty))
             {
                 MessageBox.Show("Tragen sie eine gültige Anzahl ein!", "Warnung", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -95,7 +113,7 @@ namespace VFPlaner
                 }
                 if (counter != _arbeiterzahl)
                 {
-                    MessageBox.Show($"Sie haben {counter} eingetragen, benötigen aber {_arbeiterzahl} Servicekräfte", "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(string.Format("Sie haben {0} eingetragen, benötigen aber {1} Servicekräfte", counter, _arbeiterzahl), "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {

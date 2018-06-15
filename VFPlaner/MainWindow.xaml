@@ -13,7 +13,8 @@
         <Ribbon HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" DockPanel.Dock="Top" Margin="-11,-34,-11,-5">
             <RibbonTab Header="Volksfest">
                 <RibbonGroup Header="File System">
-                    <RibbonButton x:Name="Laden" Label="Laden" Click="Load" />
+                    <RibbonButton Label="Neues Volksfest" Click="CreateNewVF" />
+                    <RibbonButton x:Name="Laden" Label="Volksfest laden" Click="Load"/>
                     <RibbonButton x:Name="Speichern" Label="Speichern" Click="Save" />
                 </RibbonGroup>
                 <RibbonGroup Header="Mitarbeiter - System">
@@ -46,7 +47,7 @@
 
                     <dxg:GridControl x:Name="Grid" VerticalAlignment="Top" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True"  Margin="0" SelectionMode="MultipleRow" >
 
-                        <dxg:GridControl.View >
+                        <!--<dxg:GridControl.View >
                             <dxg:TableView AutoWidth="True" NewItemRowPosition="Bottom" ShowGroupFooters="true" AllowPerPixelScrolling="True" ShowTotalSummary="True" Height="282" Margin="0,0,-0.333,0">
                                 <dxg:TableView.FormatConditions>
                                     <dxg:ColorScaleFormatCondition ApplyToRow="False" FieldName="Team" MaxValue="10" MinValue="0">
@@ -79,7 +80,7 @@
                                            IsEnabled="{Binding DataContext.RowData.Row.IsChecked, Mode=OneTime}"/>
                                 </ControlTemplate>
                             </dxg:GridColumn.EditTemplate>
-                        </dxg:GridColumn>
+                        </dxg:GridColumn>-->
 
                     </dxg:GridControl>
                 </TabItem>

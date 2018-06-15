@@ -1,25 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="fest"
-    targetNamespace="http://tempuri.org/fest.xsd"
-    elementFormDefault="qualified"
-    xmlns="http://tempuri.org/fest.xsd"
-    xmlns:mstns="http://tempuri.org/fest.xsd"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="Volksfest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Mitarbeiter" maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="Name" type="xs:string" />
+        <xs:element maxOccurs="unbounded" name="Mitarbeiter">
           <xs:complexType>
             <xs:sequence>
-              <xs:element type="xs:byte" name="ID"/>
-              <xs:element type="xs:string" name="Vorname"/>
-              <xs:element type="xs:string" name="Nachname"/>
-              <xs:element type="xs:int" name="Telefonnumer" minOccurs="0"/>
-              <xs:element type="xs:byte" name="Tage"/>
-              <xs:element type="xs:short" name="ErstesJahr"/>
-              <xs:element type="xs:byte" name="AnzahlJahre"/>
-              <xs:element type="xs:string" name="DiesesJahr"/>
-              <xs:element type="xs:byte" name="Team"/>
+              <xs:element name="ID" type="xs:unsignedByte" />
+              <xs:element name="Vorname" type="xs:string" />
+              <xs:element name="Nachname" type="xs:string" />
+              <xs:element minOccurs="0" name="Telefonnumer" type="xs:unsignedInt" />
+              <xs:element name="Tage" type="xs:unsignedByte" />
+              <xs:element name="ErstesJahr" type="xs:unsignedShort" />
+              <xs:element name="DiesesJahr" type="xs:string" />
+              <xs:element name="Team" type="xs:unsignedByte" />
+              <xs:element name="AnzahlJahre" type="xs:unsignedInt">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:unsignedByte">
+                      <xs:attribute name="type" type="xs:string" use="required" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
