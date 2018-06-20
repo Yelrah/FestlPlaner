@@ -2,6 +2,7 @@
 using DevExpress.XtraGrid.Localization;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Xml;
@@ -15,10 +16,9 @@ namespace VFPlaner
     {
 
         private bool _loaded;
-        private bool _created;
-        private int _arbeiterzahl;
-        string VFName;
-        DataSet Festschema;
+        private int _arbeiterZahl;
+        private int _anzahlTeams
+        public string xsdLocation = @"C:\Users\vogla\Documents\Projects\VFPlaner\VFPlaner\VFPlaner\config\fest.xsd";
 
         private static string _path;
         public MainWindow()
@@ -30,8 +30,8 @@ namespace VFPlaner
 
         private void CreateNewVF(object sender, RoutedEventArgs e)
         {
-            Grid.ItemsSource = GetDataFromXml(@"C:\Users\vogla\Documents\Projects\VFPlaner\VFPlaner\VFPlaner\config\fest.xsd");
-
+            _loaded = true;
+            Grid.ItemsSource = GetDataFromXsdXml(xsdLocation);
         }
 
         private void Load(object sender, RoutedEventArgs e)
@@ -41,17 +41,30 @@ namespace VFPlaner
             if (of.ShowDialog() != true) return;
             _loaded = true;
 
-            var doc = Core.SelectNodes(of.FileName, "//Saison2018/Volksfest");
+            try
+            {
+                if (Core.ValidationOfXml(xsdLocation, of.FileName))
+                {
 
-            XmlNode root = doc.DocumentElement;
-            var list = root?.SelectNodes("//Output/ServiceTeam/Mitarbeiter");
+                    var doc = Core.SelectNodes(of.FileName, "//Volksfest");
 
-            _path = of.FileName;
-            //Grid.ItemsSource = GetDataFromXml(of.FileName);
-            Grid.ItemsSource = GetDataFromXml(_path);
+                    XmlNode root = doc.DocumentElement;
+                    var list = root?.SelectNodes("//Output/ServiceTeam/Mitarbeiter");
+
+                    _path = of.FileName;
+                    //Grid.ItemsSource = GetDataFromXml(of.FileName);
+                    Grid.ItemsSource = GetDataFromXsdXml(_path);
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Fehler beim Validieren: " + exc.Message);
+            }
         }
 
-        private static DataTable GetDataFromXml(string path)
+
+
+        private static DataTable GetDataFromXsdXml(string path)
         {
             var ds = new DataSet();
             ds.ReadXml(path);
@@ -59,27 +72,22 @@ namespace VFPlaner
         }
         private void Save(object sender, RoutedEventArgs e)
         {
-
             if (_loaded)
             {
                 SaveFileDialog sf = new SaveFileDialog
                 {
-                    FileName = VFName + "_" + DateTime.Now.Year + ".xml"
+                    FileName = "_" + DateTime.Now.Year + ".xml"
                 };
-                sf.ShowDialog();
+
                 if (sf.ShowDialog() == true)
                 {
 
-                    ((DataTable)Grid.ItemsSource).DataSet.WriteXml(_path);
+                    ((DataTable)Grid.ItemsSource).DataSet.WriteXml(sf.FileName);
                 }
             }
             else { SchmeißLadeFehler(); }
         }
 
-        public void PostDataToXml()
-        {
-
-        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -93,6 +101,7 @@ namespace VFPlaner
             }
         }
 
+
         private void MaUbernahme()
         {
             if (Anzahl.Text.Equals(string.Empty))
@@ -101,40 +110,83 @@ namespace VFPlaner
             }
             else
             {
-                _arbeiterzahl = Int32.Parse(Anzahl.Text);
-                var counter = 0;
-                for (var i = 0; i < (Grid.VisibleRowCount - 1); i++)
-                {
-                    var test = (string)Grid.GetCellValue(i, "DiesesJahr");
-                    if (test.Equals("true") || test.Equals("True"))
-                    {
-                        counter++;
-                    }
-                }
-                if (counter != _arbeiterzahl)
+                int counter = CompareInputWithNeededWorkers();
+                if (counter != _arbeiterZahl)
                 {
                     MessageBox.Show(string.Format("Sie haben {0} eingetragen, benötigen aber {1} Servicekräfte", counter, _arbeiterzahl), "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
                     //TO DO Something
+                    Teams.Text = CountTeams();
 
 
                 }
             }
         }
 
-        private void SchmeißLadeFehler()
+        private int CompareInputWithNeededWorkers()
         {
-            MessageBox.Show("Laden Sie zuerst eine Datei", "Fehler", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            _arbeiterZahl = Int32.Parse(Anzahl.Text);
+            var counter = 0;
+            for (var i = 0; i < (Grid.VisibleRowCount - 1); i++)
+            {
+                var test = (string)Grid.GetCellValue(i, "DiesesJahr");
+                if (test.Equals("true") || test.Equals("True"))
+                {
+                    counter++;
+                }
+            }
+
+            return counter;
         }
 
+        private string CountTeams()
+        {
+            HashSet<int> CountedTeams = new HashSet<int>();
+            for (var i = 0; i < Grid.VisibleRowCount - 1; i++)
+            {
+                CountedTeams.Add(Int32.Parse(Grid.GetCellValue(i, "Team").ToString()));
+            }
+            _anzahlTeams = CountedTeams.Count;
+            return CountedTeams.Count.ToString();
+        }
 
+        private void SchmeißLadeFehler()
+        {
+            MessageBox.Show("Laden oder erstellen Sie zuerst eine Datei", "Fehler", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        }
 
+        private void PrintGrid(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                gridview.Print();
+            }
+            catch
+            {
+                SchmeißLadeFehler();
+            }
+        }
 
-        //private int FindMax (int i)
-        //{
+        private void PrintLose(object sender, RoutedEventArgs e)
+        {
 
-        //}
+        }
+
+        private void Create_Lose(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Int32.Parse(Teams.Text);
+
+            }
+
+            catch (Exception exc)
+            {
+                throw new Exception(exc.Message);
+            }
+
+        }
     }
 }
