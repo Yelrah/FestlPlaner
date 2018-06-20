@@ -17,7 +17,7 @@ namespace VFPlaner
 
         private bool _loaded;
         private int _arbeiterZahl;
-        private int _anzahlTeams
+        private int _anzahlTeams;
         public string xsdLocation = @"C:\Users\vogla\Documents\Projects\VFPlaner\VFPlaner\VFPlaner\config\fest.xsd";
 
         private static string _path;
@@ -113,7 +113,7 @@ namespace VFPlaner
                 int counter = CompareInputWithNeededWorkers();
                 if (counter != _arbeiterZahl)
                 {
-                    MessageBox.Show(string.Format("Sie haben {0} eingetragen, benötigen aber {1} Servicekräfte", counter, _arbeiterzahl), "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(string.Format("Sie haben {0} eingetragen, benötigen aber {1} Servicekräfte", counter, _arbeiterZahl), "Warnung!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
